@@ -11,12 +11,6 @@ function genRand(size)
     	return new BN(crypto.randomBytes((size >> 3) + 1).toString('hex'), 16).and(mask);
 }
 
-function modPow(base, exponent, modulus)
-{
-	let red = BN.red(modulus);
-	return ((base.toRed(red)).redPow(exponent)).fromRed();
-}
-
 function hash(data)
 {
     	return crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex');
