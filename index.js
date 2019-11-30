@@ -87,5 +87,5 @@ console.log('dec :', bnbase64(dec));
 /*
 let re = '^bit.*$';
 let keys = vanityGen(re, new BN(1024 * 1024, 10))
-console.log((keys[1]).toBuffer().toString('base64'));
+console.log(bnbase64(keys[1]));
 */
