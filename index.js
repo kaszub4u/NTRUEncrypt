@@ -8,23 +8,23 @@ const size = p.bitLength()
 function genRand(size)
 {
 	let mask = new BN(1, 10).shln(size).sub(new BN(1, 10))
-    return new BN(crypto.randomBytes((size >> 3) + 1).toString('hex'), 16).and(mask);
+    	return new BN(crypto.randomBytes((size >> 3) + 1).toString('hex'), 16).and(mask);
 }
 
 function modPow(base, exponent, modulus)
 {
-var red = BN.red(modulus);
-return ((base.toRed(red)).redPow(exponent)).fromRed();
+	let red = BN.red(modulus);
+	return ((base.toRed(red)).redPow(exponent)).fromRed();
 }
 
 function hash(data)
 {
-    return crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex');
+    	return crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex');
 }
 
 function bnhash(n)
 {
-return new BN(hash(n).toString('hex'), 16)
+	return new BN(hash(n).toString('hex'), 16)
 }
 
 function bnbase64(n)
@@ -39,48 +39,48 @@ function base64bn(str)
 
 function genKeys(size, p)
 {
-    let f = bnhash(genRand(p.bitLength()));
-    let g = bnhash(f);
+    	let f = bnhash(genRand(p.bitLength()));
+    	let g = bnhash(f);
 	
-    let fq = f.invm(q);
-    let h = (p.mul(fq).mul(g)).mod(q);
+    	let fq = f.invm(q);
+    	let h = (p.mul(fq).mul(g)).mod(q);
    
-    return [f, h]
+    	return [f, h]
 }
 
 function NTRUEncrypt(m, h)
 {
-    let r = genRand(size);
-    return (r.mul(h).add(m)).mod(q);
+    	let r = genRand(size);
+    	return (r.mul(h).add(m)).mod(q);
 }
 
 function NTRUDecrypt(e, f)
 {
-    let fp = f.invm(p);
+    	let fp = f.invm(p);
     
-    let a = (f.mul(e)).mod(q);
-    let b = a.mod(p);
-    let c = (fp.mul(b)).mod(p);
+    	let a = (f.mul(e)).mod(q);
+    	let b = a.mod(p);
+    	let c = (fp.mul(b)).mod(p);
    
-    return c;
+    	return c;
 }
 
 function vanityGen(reg, c)
 {
-    let re = new RegExp(reg);
-    let keys;
+    	let re = new RegExp(reg);
+    	let keys;
    
-    while(c.isub(new BN(1, 10)))
-        if(re.test(bnbase64((keys = genKeys(size, p))[1])))
-            break;
+    	while(c.isub(new BN(1, 10)))
+        	if(re.test(bnbase64((keys = genKeys(size, p))[1])))
+            		break;
 
-    return c.isZero() ? [new BN(0, 10), new BN(0, 10)] : keys;
+    	return c.isZero() ? [new BN(0, 10), new BN(0, 10)] : keys;
 }
 
 let [f, h] = genKeys(size, p)
 
-let m = genRand(p.bitLength());
-let enc = NTRUEncrypt(m, h);
+let msg = genRand(p.bitLength());
+let enc = NTRUEncrypt(msg, h);
 let dec = NTRUDecrypt(enc, f)
 
 
