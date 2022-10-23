@@ -1,4 +1,5 @@
-NTRUEncrypt
+NTRUEncrypt, NTRUDecrypt, NTRUSign
+
 https://en.wikipedia.org/wiki/NTRUEncrypt
 
 indexBigInt.js - js BigInt
