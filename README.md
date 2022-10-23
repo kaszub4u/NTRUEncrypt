@@ -1,4 +1,7 @@
 NTRUEncrypt
 https://en.wikipedia.org/wiki/NTRUEncrypt
 
-run// node indexBigInt.js to see output
+indexBigInt.js - js BigInt
+index.js - js BN.js
+
+run: node indexBigInt.js to see output
